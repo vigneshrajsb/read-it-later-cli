@@ -14,7 +14,9 @@ USAGE:
 
 COMMANDS:
   add <url>                 Add a URL (auto-detects type)
-  list                      List items (default: unread)
+  reading                   Show reading list (articles + videos)
+  bookmarks                 Show saved bookmarks
+  list                      List all items (default: unread)
   done <id>                 Mark item as read/watched
   undone <id>               Mark item as unread
   search <query>            Search across title, url, tags, notes
@@ -32,6 +34,8 @@ OPTIONS:
   --type <type>             Filter by type (video|article|bookmark)
   --status <status>         Filter by status (unread|read)
   --tag <tag>               Filter by tag
+  --articles                Filter reading list to articles only
+  --videos                  Filter reading list to videos only
   --days <n>                History: last N days (default: 7)
   --weeks <n>               History: last N weeks
   --month <mmyy>            History: specific month (e.g., 0226)
@@ -40,15 +44,13 @@ OPTIONS:
 
 EXAMPLES:
   shelf add "https://youtube.com/watch?v=abc"
-  shelf add "https://medium.com/article" --tags "ai,tools"
   shelf add "https://turbotax.com" --bookmark --tags "tax"
-  shelf list
-  shelf list --type video --status unread
+  shelf reading
+  shelf reading --videos
+  shelf bookmarks
   shelf done 3
   shelf search "machine learning"
-  shelf tags
   shelf history --days 7
-  shelf history --month 0226
 `;
 
 function formatDate(dateStr: string): string {
@@ -99,6 +101,8 @@ async function main() {
       type: { type: "string" },
       status: { type: "string" },
       tag: { type: "string" },
+      articles: { type: "boolean", default: false },
+      videos: { type: "boolean", default: false },
       days: { type: "string" },
       weeks: { type: "string" },
       month: { type: "string" },
@@ -133,6 +137,59 @@ async function main() {
       } else {
         console.log(`✅ Added: ${typeEmoji(item.type)} ${item.title || item.url}`);
         if (item.tags) console.log(`   Tags: ${item.tags}`);
+      }
+      break;
+    }
+
+    case "reading": {
+      // Get articles and videos (excludes bookmarks)
+      let itemList: items.Item[] = [];
+      
+      if (values.articles && !values.videos) {
+        itemList = items.listItems({ type: "article", status: "unread", tag: values.tag as string });
+      } else if (values.videos && !values.articles) {
+        itemList = items.listItems({ type: "video", status: "unread", tag: values.tag as string });
+      } else {
+        // Both articles and videos
+        const articles = items.listItems({ type: "article", status: "unread", tag: values.tag as string });
+        const videos = items.listItems({ type: "video", status: "unread", tag: values.tag as string });
+        itemList = [...articles, ...videos].sort((a, b) => 
+          new Date(b.added_at).getTime() - new Date(a.added_at).getTime()
+        );
+      }
+      
+      if (asJson) {
+        console.log(JSON.stringify(itemList, null, 2));
+      } else {
+        if (itemList.length === 0) {
+          console.log("No items in reading list.");
+        } else {
+          const filter = values.articles ? " (articles)" : values.videos ? " (videos)" : "";
+          console.log(`\n📚 Reading List${filter}\n`);
+          itemList.forEach((item) => printItem(item, false));
+          console.log("");
+        }
+      }
+      break;
+    }
+
+    case "bookmarks": {
+      const itemList = items.listItems({
+        type: "bookmark",
+        status: (values.status as items.Item["status"]) || "unread",
+        tag: values.tag as string,
+      });
+      
+      if (asJson) {
+        console.log(JSON.stringify(itemList, null, 2));
+      } else {
+        if (itemList.length === 0) {
+          console.log("No bookmarks found.");
+        } else {
+          console.log("\n🔖 Bookmarks\n");
+          itemList.forEach((item) => printItem(item, false));
+          console.log("");
+        }
       }
       break;
     }
