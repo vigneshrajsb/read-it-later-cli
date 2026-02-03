@@ -98,6 +98,29 @@ The CLI auto-detects type from URL:
 4. **Use --json**: For programmatic access
 5. **Search broadly**: `shelf search` checks title, url, tags, notes
 
+## Presenting Data to Users
+
+When showing lists, **always include clickable URLs**:
+
+```
+📚 Unread
+
+1. <https://bazel.build/> — Bazel [tools]
+2. <https://x.com/user/status/123> — AI Guide [social, ai]
+3. <https://medium.com/article> — Great read [tech]
+
+✅ Completed
+
+1. <https://example.com/post> — Finished article [ai]
+```
+
+**Format rules:**
+- Use `<url>` format for clickable links (works in Telegram/Discord)
+- Include title if available, otherwise just the URL
+- Show tags in brackets `[tag1, tag2]`
+- Group by status (Unread / Completed)
+- Use emoji prefixes: 📄 article, 🎬 video, 🔖 bookmark
+
 ## Database Info
 
 - **Location**: `~/.shelf/shelf.db`
