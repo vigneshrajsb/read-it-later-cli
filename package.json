@@ -24,7 +24,9 @@
     "sqlite",
     "pocket",
     "instapaper",
-    "save-for-later"
+    "save-for-later",
+    "openclaw",
+    "ai-agent"
   ],
   "author": "vigneshrajsb",
   "license": "MIT",
