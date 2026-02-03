@@ -1,6 +1,6 @@
 # AGENTS.md - How to Use read-it-later-cli
 
-Guide for AI agents to interact with the `later` CLI.
+Guide for AI agents to interact with the `ril` CLI.
 
 ## Philosophy
 
@@ -11,15 +11,15 @@ Call CLI commands instead of parsing markdown. The database handles consistency;
 ## Quick Reference
 
 ```bash
-later add <url> [--tags X] [--bookmark]   # save URL
-later reading                             # articles + videos to consume
-later reading --videos                    # videos only
-later reading --articles                  # articles only
-later bookmarks                           # saved references
-later done <id>                           # mark complete
-later search <query>                      # find items
-later tags                                # list all tags
-later history --days 7                    # what was read recently
+ril add <url> [--tags X] [--bookmark]   # save URL
+ril reading                             # articles + videos to consume
+ril reading --videos                    # videos only
+ril reading --articles                  # articles only
+ril bookmarks                           # saved references
+ril done <id>                           # mark complete
+ril search <query>                      # find items
+ril tags                                # list all tags
+ril history --days 7                    # what was read recently
 ```
 
 ## Command Patterns
@@ -30,51 +30,51 @@ Auto-detect type from URL:
 
 ```bash
 # User: "save this video" + YouTube link
-later add "https://youtube.com/watch?v=abc"
+ril add "https://youtube.com/watch?v=abc"
 # ✅ Added: 🎬 Video Title
 
 # User: "bookmark this for later" 
-later add "https://turbotax.com" --bookmark --tags "tax,tools"
+ril add "https://turbotax.com" --bookmark --tags "tax,tools"
 # ✅ Added: 🔖 TurboTax
 
 # User: "interesting article on AI"
-later add "https://blog.com/ai-post" --tags "ai"
+ril add "https://blog.com/ai-post" --tags "ai"
 ```
 
 ### Checking Reading List
 
 ```bash
 # User: "what do I need to read?"
-later list --json
+ril list --json
 
 # User: "what videos are in my queue?"
-later list --type video --json
+ril list --type video --json
 
 # User: "show me my bookmarks"
-later list --type bookmark --status unread --json
+ril list --type bookmark --status unread --json
 ```
 
 ### Marking Complete
 
 ```bash
 # User: "finished that article"
-later done 3
+ril done 3
 
 # User: "watched the YouTube video"
-later done 5
+ril done 5
 ```
 
 ### Finding Things
 
 ```bash
 # User: "did I save anything about taxes?"
-later search "tax" --json
+ril search "tax" --json
 
 # User: "what tags do I have?"
-later tags --json
+ril tags --json
 
 # User: "what did I read last week?"
-later history --days 7 --json
+ril history --days 7 --json
 ```
 
 ## Type Detection
@@ -99,7 +99,7 @@ The CLI auto-detects type from URL:
 2. **Use tags liberally**: Help user organize (`--tags "ai,tools,later"`)
 3. **Add notes for context**: `--notes "Recommended by X"`
 4. **Use --json**: For programmatic access
-5. **Search broadly**: `later search` checks title, url, tags, notes
+5. **Search broadly**: `ril search` checks title, url, tags, notes
 
 ## Presenting Data to Users
 
@@ -124,10 +124,10 @@ When showing lists, **always include clickable URLs**:
 - Use emoji prefixes: 📄 article, 🎬 video, 🔖 bookmark
 
 **Default behavior:**
-- "show my reading list" → `later reading` (articles + videos)
-- "show my videos" → `later reading --videos`
-- "show my bookmarks" → `later bookmarks`
-- "what did I read?" → `later history --days 7`
+- "show my reading list" → `ril reading` (articles + videos)
+- "show my videos" → `ril reading --videos`
+- "show my bookmarks" → `ril bookmarks`
+- "what did I read?" → `ril history --days 7`
 - **Bookmarks are NOT included in reading list** — user must ask explicitly
 
 ## Database Info
@@ -155,7 +155,7 @@ When a user first uses later, explain:
 User: "save this https://youtube.com/watch?v=abc123 looks interesting"
 
 Agent:
-$ later add "https://youtube.com/watch?v=abc123"
+$ ril add "https://youtube.com/watch?v=abc123"
 
 Response: "✅ Saved to your watchlist! You have 5 videos queued."
 ```
@@ -164,7 +164,7 @@ Response: "✅ Saved to your watchlist! You have 5 videos queued."
 User: "what did I read this week?"
 
 Agent:
-$ later history --days 7 --json
+$ ril history --days 7 --json
 
 Response: "This week you finished:
 - 📄 How to Build AI Agents (Mon)

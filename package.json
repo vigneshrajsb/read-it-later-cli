@@ -1,10 +1,9 @@
 {
   "name": "read-it-later-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI for saving and organizing URLs - articles, videos, bookmarks. Read it later.",
   "type": "module",
   "bin": {
-    "later": "./src/index.ts",
     "ril": "./src/index.ts"
   },
   "files": [

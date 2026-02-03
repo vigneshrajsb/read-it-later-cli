@@ -7,10 +7,10 @@ import * as items from "./items";
 initDb();
 
 const HELP = `
-later - CLI for saving and organizing URLs
+ril - Read It Later CLI for saving and organizing URLs
 
 USAGE:
-  later <command> [options]
+  ril <command> [options]
 
 COMMANDS:
   add <url>                 Add a URL (auto-detects type)
@@ -43,14 +43,14 @@ OPTIONS:
   --help, -h                Show this help
 
 EXAMPLES:
-  later add "https://youtube.com/watch?v=abc"
-  later add "https://turbotax.com" --bookmark --tags "tax"
-  later reading
-  later reading --videos
-  later bookmarks
-  later done 3
-  later search "machine learning"
-  later history --days 7
+  ril add "https://youtube.com/watch?v=abc"
+  ril add "https://turbotax.com" --bookmark --tags "tax"
+  ril reading
+  ril reading --videos
+  ril bookmarks
+  ril done 3
+  ril search "machine learning"
+  ril history --days 7
 `;
 
 function formatDate(dateStr: string): string {
@@ -120,7 +120,7 @@ async function main() {
     case "add": {
       const url = positionals[1];
       if (!url) {
-        console.error("Usage: later add <url> [--tags X] [--notes X] [--bookmark]");
+        console.error("Usage: ril add <url> [--tags X] [--notes X] [--bookmark]");
         process.exit(1);
       }
       
@@ -220,7 +220,7 @@ async function main() {
     case "done": {
       const id = positionals[1];
       if (!id) {
-        console.error("Usage: later done <id>");
+        console.error("Usage: ril done <id>");
         process.exit(1);
       }
       const success = items.markDone(id);
@@ -238,7 +238,7 @@ async function main() {
     case "undone": {
       const id = positionals[1];
       if (!id) {
-        console.error("Usage: later undone <id>");
+        console.error("Usage: ril undone <id>");
         process.exit(1);
       }
       const success = items.markUnread(id);
@@ -256,7 +256,7 @@ async function main() {
     case "search": {
       const query = positionals.slice(1).join(" ");
       if (!query) {
-        console.error("Usage: later search <query>");
+        console.error("Usage: ril search <query>");
         process.exit(1);
       }
       const results = items.searchItems(query);
@@ -340,7 +340,7 @@ async function main() {
     case "edit": {
       const id = positionals[1];
       if (!id) {
-        console.error("Usage: later edit <id> [--tags X] [--notes X] [--title X] [--type video|article|bookmark] [--bookmark]");
+        console.error("Usage: ril edit <id> [--tags X] [--notes X] [--title X] [--type video|article|bookmark] [--bookmark]");
         process.exit(1);
       }
       
@@ -372,7 +372,7 @@ async function main() {
     case "delete": {
       const id = positionals[1];
       if (!id) {
-        console.error("Usage: later delete <id>");
+        console.error("Usage: ril delete <id>");
         process.exit(1);
       }
       const success = items.deleteItem(id);
