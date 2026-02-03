@@ -2,14 +2,26 @@
 
 A simple CLI for saving and organizing URLs - articles, videos, and bookmarks. Read it later.
 
-## Installation
+## Install
 
 ```bash
-git clone https://github.com/vigneshrajsb/read-it-later-cli.git
-cd read-it-later-cli
-bun install
-bun link
+npm install -g read-it-later-cli
+# or
+pnpm add -g read-it-later-cli
+# or
+bun add -g read-it-later-cli
+
+# one-shot (no install)
+bunx read-it-later-cli --help
+npx read-it-later-cli --help
 ```
+
+<!-- Homebrew (macOS):
+```bash
+brew install vigneshrajsb/tap/ril
+``` -->
+
+**Requires:** [Bun](https://bun.sh) runtime (`curl -fsSL https://bun.sh/install | bash`)
 
 ## Usage
 
@@ -75,10 +87,10 @@ ril delete 3                    # remove item
 ### Options
 
 ```bash
---json                            # JSON output
---bookmark, -b                    # save as bookmark
---tags, -t "tag1,tag2"           # add tags
---notes, -n "text"               # add notes
+--json                          # JSON output
+--bookmark, -b                  # save as bookmark
+--tags, -t "tag1,tag2"          # add tags
+--notes, -n "text"              # add notes
 ```
 
 ## Data Storage
