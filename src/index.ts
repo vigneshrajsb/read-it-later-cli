@@ -78,9 +78,16 @@ function truncate(str: string | null, len: number): string {
 function printItem(item: items.Item, showStatus: boolean = true) {
   const status = showStatus ? statusEmoji(item.status) + " " : "";
   const type = typeEmoji(item.type);
-  const title = truncate(item.title || item.url, 60);
   const tags = item.tags ? ` [${item.tags}]` : "";
-  console.log(`${status}${item.id}. ${type} ${title}${tags}`);
+  
+  if (item.title) {
+    // Show title on first line, URL on second line
+    console.log(`${status}${item.id}. ${type} ${truncate(item.title, 60)}${tags}`);
+    console.log(`     ${item.url}`);
+  } else {
+    // No title, just show URL
+    console.log(`${status}${item.id}. ${type} ${item.url}${tags}`);
+  }
 }
 
 async function main() {
