@@ -1,6 +1,33 @@
 # CLAUDE.md
 
-URL saving and organization CLI with SQLite backend.
+URL saving and organization CLI with SQLite backend (formerly shelf-cli).
+
+## ⚠️ Data Safety
+
+**Backup before destructive operations:**
+```bash
+cp ~/.shelf/shelf.db ~/.shelf/shelf.db.bak
+```
+
+## Release Process
+
+When releasing a new version:
+
+```bash
+# 1. Bump version (creates commit + tag)
+npm version patch|minor|major -m "Release %s - description"
+
+# 2. Push (GitHub Actions publishes to npm)
+git push && git push --tags
+
+# 3. UPDATE GLOBAL INSTALL (don't forget!)
+npm install -g read-it-later-cli@latest
+
+# 4. Verify
+npm list -g read-it-later-cli
+```
+
+> ⚠️ Step 3 is critical! Dashboard uses the global `ril` command.
 
 ## For Agents
 

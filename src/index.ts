@@ -183,7 +183,7 @@ async function main() {
     case "bookmarks": {
       const itemList = items.listItems({
         type: "bookmark",
-        status: (values.status as items.Item["status"]) || "unread",
+        status: values.status as items.Item["status"], // Show all bookmarks by default
         tag: values.tag as string,
       });
       

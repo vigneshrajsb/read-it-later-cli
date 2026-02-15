@@ -101,6 +101,34 @@ Data stored in `~/.shelf/shelf.db` (SQLite).
 ril db                          # show path
 ```
 
+## Development
+
+### Running Tests
+
+Tests use an in-memory database (automatically via `RIL_TEST=1`):
+
+```bash
+# Run all tests
+bun test
+
+# Watch mode
+bun test --watch
+
+# Via test runner script
+cd tests && ./run-tests.sh
+```
+
+### Test Coverage
+
+| Feature | Tests |
+|---------|-------|
+| Add items | ✅ Title, URL, type detection, tags, notes |
+| List items | ✅ Filtering by type, tag, status, limit |
+| Mark done/undone | ✅ Status changes, read_at timestamp |
+| Search | ✅ Title, tags, limit |
+| Tags | ✅ Count aggregation, sorting |
+| Timestamps | ✅ added_at, read_at, ordering |
+
 ## Type Detection
 
 | Type | Detected From |
@@ -112,6 +140,30 @@ ril db                          # show path
 ## AI Agent Integration
 
 See **AGENTS.md** for detailed agent usage.
+
+## Release Process
+
+1. **Bump version & tag:**
+   ```bash
+   npm version patch|minor|major -m "Release %s - description"
+   ```
+
+2. **Push to GitHub (triggers npm publish):**
+   ```bash
+   git push && git push --tags
+   ```
+
+3. **Update global install on this machine:**
+   ```bash
+   npm install -g read-it-later-cli@latest
+   ```
+
+4. **Verify:**
+   ```bash
+   npm list -g read-it-later-cli
+   ```
+
+> ⚠️ **Don't forget step 3!** The dashboard uses the global `ril` command.
 
 ## License
 
