@@ -61,6 +61,179 @@ EXAMPLES:
   ril setup
 `;
 
+const COMMAND_HELP: Record<string, string> = {
+  add: `ril add <url> [options]
+
+  Save a URL to your reading list. Type is auto-detected.
+
+  Options:
+    --bookmark, -b      Save as bookmark (reference, not to consume)
+    --tags, -t <tags>   Comma-separated tags
+    --notes, -n <text>  Add a note
+    --title <text>      Override auto-fetched title
+    --json              Output as JSON
+
+  Examples:
+    ril add "https://example.com/article"
+    ril add "https://youtube.com/watch?v=abc" --tags "tech,ai"
+    ril add "https://tool.com" --bookmark --tags "tools"`,
+
+  reading: `ril reading [options]
+
+  Show your reading list (articles + videos, unread only).
+
+  Options:
+    --articles          Show articles only
+    --videos            Show videos only
+    --tag <tag>         Filter by tag
+    --json              Output as JSON
+
+  Examples:
+    ril reading
+    ril reading --videos
+    ril reading --tag "ai"`,
+
+  bookmarks: `ril bookmarks [options]
+
+  Show saved bookmarks (reference items).
+
+  Options:
+    --status <status>   Filter by status (unread|read)
+    --tag <tag>         Filter by tag
+    --json              Output as JSON
+
+  Examples:
+    ril bookmarks
+    ril bookmarks --tag "tools"`,
+
+  list: `ril list [options]
+
+  List all items (default: unread).
+
+  Options:
+    --type <type>       Filter by type (video|article|bookmark)
+    --status <status>   Filter by status (unread|read), default: unread
+    --tag <tag>         Filter by tag
+    --limit <n>         Limit number of results
+    --json              Output as JSON
+
+  Examples:
+    ril list
+    ril list --type video --status read
+    ril list --tag "ai" --limit 10`,
+
+  done: `ril done <id>
+
+  Mark an item as read/watched.
+
+  Options:
+    --json              Output as JSON
+
+  Examples:
+    ril done 3
+    ril done 15`,
+
+  undone: `ril undone <id>
+
+  Mark an item back as unread.
+
+  Options:
+    --json              Output as JSON
+
+  Examples:
+    ril undone 3`,
+
+  search: `ril search <query>
+
+  Search across title, URL, tags, and notes.
+
+  Options:
+    --json              Output as JSON
+
+  Examples:
+    ril search "machine learning"
+    ril search "react"`,
+
+  tags: `ril tags
+
+  List all tags with their usage counts, sorted by frequency.
+
+  Options:
+    --json              Output as JSON`,
+
+  history: `ril history [options]
+
+  Show items you've completed (marked as read/watched).
+
+  Options:
+    --days <n>          Last N days (default: 7)
+    --weeks <n>         Last N weeks
+    --month <mmyy>      Specific month (e.g., 0226 for Feb 2026)
+    --json              Output as JSON
+
+  Examples:
+    ril history
+    ril history --days 30
+    ril history --month 0426`,
+
+  recent: `ril recent [days]
+
+  Show recently added items (default: last 30 days).
+
+  Options:
+    --json              Output as JSON
+
+  Examples:
+    ril recent
+    ril recent 7`,
+
+  edit: `ril edit <id> [options]
+
+  Update an item's metadata.
+
+  Options:
+    --tags, -t <tags>   Set tags (comma-separated)
+    --notes, -n <text>  Set notes
+    --title <text>      Set title
+    --type <type>       Set type (video|article|bookmark)
+    --bookmark, -b      Shorthand for --type bookmark
+    --json              Output as JSON
+
+  Examples:
+    ril edit 3 --tags "ai,ml"
+    ril edit 5 --title "Better Title" --notes "Must read"
+    ril edit 7 --bookmark`,
+
+  delete: `ril delete <id>
+
+  Permanently delete an item.
+
+  Options:
+    --json              Output as JSON
+
+  Examples:
+    ril delete 3`,
+
+  setup: `ril setup
+
+  Interactive wizard to configure your storage backend.
+  Choose between local SQLite or Turso cloud (synced, offline-capable).`,
+
+  config: `ril config
+
+  Show current configuration (backend, Turso URL if configured).
+
+  Options:
+    --json              Output as JSON`,
+
+  db: `ril db
+
+  Show database backend info and file paths.
+
+  Options:
+    --json              Output as JSON`,
+};
+
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr);
   return d.toLocaleDateString("en-US", {
@@ -119,6 +292,10 @@ async function main() {
   }
 
   if (args[0] === "setup") {
+    if (args.includes("--help") || args.includes("-h")) {
+      console.log(`\n${COMMAND_HELP.setup}\n`);
+      return;
+    }
     const { runSetup } = await import("./setup");
     await runSetup();
     return;
@@ -150,6 +327,11 @@ async function main() {
 
   const asJson = values.json as boolean;
   const command = positionals[0];
+
+  if (values.help && command && COMMAND_HELP[command]) {
+    console.log(`\n${COMMAND_HELP[command]}\n`);
+    return;
+  }
 
   switch (command) {
     case "add": {
