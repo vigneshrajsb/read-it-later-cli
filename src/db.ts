@@ -1,6 +1,7 @@
 import { Database } from "bun:sqlite";
 import {
   chmodSync,
+  copyFileSync,
   existsSync,
   mkdirSync,
   readFileSync,
@@ -77,7 +78,6 @@ if (DB_PATH !== ":memory:") {
   // Auto-migrate from legacy ~/.shelf/ to ~/.read-it-later/
   const legacyDbPath = join(LEGACY_DATA_DIR, "shelf.db");
   if (existsSync(legacyDbPath) && !existsSync(DB_PATH)) {
-    const { copyFileSync } = require("node:fs") as typeof import("node:fs");
     copyFileSync(legacyDbPath, DB_PATH);
 
     const legacyConfigPath = join(LEGACY_DATA_DIR, "config.json");

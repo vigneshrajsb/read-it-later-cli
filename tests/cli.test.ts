@@ -31,6 +31,16 @@ describe("CLI", () => {
     expect(result).toContain(":memory:");
   });
 
+  test("shows version", async () => {
+    const result = await $`RIL_TEST=1 bun run src/index.ts --version`.text();
+    expect(result.trim()).toMatch(/^\d+\.\d+\.\d+$/);
+  });
+
+  test("shows version with -v flag", async () => {
+    const result = await $`RIL_TEST=1 bun run src/index.ts -v`.text();
+    expect(result.trim()).toMatch(/^\d+\.\d+\.\d+$/);
+  });
+
   test("tags command runs without error", async () => {
     const result = await $`RIL_TEST=1 bun run src/index.ts tags`.text();
     // Should not throw, output can be empty
