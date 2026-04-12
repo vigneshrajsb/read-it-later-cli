@@ -126,7 +126,7 @@ class LocalDbClient implements DbClient {
   }
 }
 
-class TursoDbClient implements DbClient {
+export class TursoDbClient implements DbClient {
   private client: import("@libsql/client").Client;
 
   constructor(client: import("@libsql/client").Client) {

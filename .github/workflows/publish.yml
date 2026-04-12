@@ -83,6 +83,6 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
           NOTES: ${{ steps.notes.outputs.NOTES }}
         run: |
-          gh release create "$RELEASE_TAG" \
+          printf '%s' "$NOTES" | gh release create "$RELEASE_TAG" \
             --title "$RELEASE_TAG" \
-            --notes "$NOTES"
+            --notes-file -

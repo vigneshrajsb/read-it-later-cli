@@ -178,35 +178,34 @@ export async function updateItem(
   const item = await getItem(idOrUrl);
   if (!item) return false;
 
-  const db = await getDb();
+  const setClauses: string[] = [];
+  const params: any[] = [];
+
   if (updates.tags !== undefined) {
-    await db.run(
-      "UPDATE items SET tags = ? WHERE id = ?",
-      updates.tags,
-      item.id,
-    );
+    setClauses.push("tags = ?");
+    params.push(updates.tags);
   }
   if (updates.notes !== undefined) {
-    await db.run(
-      "UPDATE items SET notes = ? WHERE id = ?",
-      updates.notes,
-      item.id,
-    );
+    setClauses.push("notes = ?");
+    params.push(updates.notes);
   }
   if (updates.title !== undefined) {
-    await db.run(
-      "UPDATE items SET title = ? WHERE id = ?",
-      updates.title,
-      item.id,
-    );
+    setClauses.push("title = ?");
+    params.push(updates.title);
   }
   if (updates.type !== undefined) {
-    await db.run(
-      "UPDATE items SET type = ? WHERE id = ?",
-      updates.type,
-      item.id,
-    );
+    setClauses.push("type = ?");
+    params.push(updates.type);
   }
+
+  if (setClauses.length === 0) return true;
+
+  const db = await getDb();
+  params.push(item.id);
+  await db.run(
+    `UPDATE items SET ${setClauses.join(", ")} WHERE id = ?`,
+    ...params,
+  );
 
   return true;
 }

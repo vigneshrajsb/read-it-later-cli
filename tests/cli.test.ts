@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { $ } from "bun";
 
 // ALWAYS use test mode for CLI tests to avoid production DB corruption
-// Use inline env var syntax which is more reliable than .env() method
+// Use inline env var syntax (RIL_TEST=1 bun run ...) rather than Bun's $.env() method
 
 describe("CLI", () => {
   test("shows help", async () => {
