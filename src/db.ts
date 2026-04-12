@@ -51,9 +51,7 @@ export function loadConfig(): Config {
 
 export function saveConfig(config: Config): void {
   writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
-  if (config.turso?.authToken) {
-    chmodSync(CONFIG_PATH, 0o600);
-  }
+  chmodSync(CONFIG_PATH, 0o600);
 }
 
 let _config: Config | null = null;
@@ -73,7 +71,7 @@ export function updateConfig(updates: Partial<Config>): Config {
 
 if (DB_PATH !== ":memory:") {
   if (!existsSync(DATA_DIR)) {
-    mkdirSync(DATA_DIR, { recursive: true });
+    mkdirSync(DATA_DIR, { recursive: true, mode: 0o700 });
   }
 
   // Auto-migrate from legacy ~/.shelf/ to ~/.read-it-later/
