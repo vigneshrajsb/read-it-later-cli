@@ -76,7 +76,7 @@ describe("added_at timestamp", () => {
     const item2 = await addItem("https://example.com/2", { title: "Second" });
 
     const result = await listItems();
-    expect(result[0].id).toBe(item2.id);
-    expect(result[1].id).toBe(item1.id);
+    expect(result[0]!.id).toBe(item2.id);
+    expect(result[1]!.id).toBe(item1.id);
   });
 });
