@@ -130,18 +130,33 @@ When showing lists, **always include clickable URLs**:
 - "what did I read?" → `ril history --days 7`
 - **Bookmarks are NOT included in reading list** — user must ask explicitly
 
-## Database Info
+## Storage Backend
 
-- **Location**: `~/.shelf/shelf.db`
+The CLI supports two storage backends:
+
+### Local (default)
+- **Location**: `~/.read-it-later/read-it-later.db`
 - **Format**: SQLite (portable, queryable)
 - **Backup**: Copy the file to back up all data
 - **Privacy**: Local only, never transmitted
+
+### Turso Cloud
+- **Remote**: Cloud-hosted SQLite via Turso
+- **Local replica**: `~/.read-it-later/replica.db` (syncs every 60s)
+- **Offline**: Works offline via embedded replica, syncs when online
+- **Setup**: Run `ril setup` to configure
+
+```bash
+ril db         # show backend info and paths
+ril config     # show full config including backend
+ril setup      # interactive backend setup wizard
+```
 
 ## First-Time Setup (Onboarding Users)
 
 When a user first uses later, explain:
 
-> "I use a local database (`~/.shelf/shelf.db`) to save URLs you want to read, watch, or bookmark.
+> "I use a local database (`~/.read-it-later/read-it-later.db`) to save URLs you want to read, watch, or bookmark.
 > 
 > Just send me links and I'll save them. I auto-detect if it's a video or article.
 > 

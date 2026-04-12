@@ -1,8 +1,8 @@
-import { describe, test, expect } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { $ } from "bun";
 
 // ALWAYS use test mode for CLI tests to avoid production DB corruption
-// Use inline env var syntax which is more reliable than .env() method
+// Use inline env var syntax (RIL_TEST=1 bun run ...) rather than Bun's $.env() method
 
 describe("CLI", () => {
   test("shows help", async () => {
@@ -29,6 +29,16 @@ describe("CLI", () => {
   test("db command in test mode shows :memory:", async () => {
     const result = await $`RIL_TEST=1 bun run src/index.ts db`.text();
     expect(result).toContain(":memory:");
+  });
+
+  test("shows version", async () => {
+    const result = await $`RIL_TEST=1 bun run src/index.ts --version`.text();
+    expect(result.trim()).toMatch(/^\d+\.\d+\.\d+$/);
+  });
+
+  test("shows version with -v flag", async () => {
+    const result = await $`RIL_TEST=1 bun run src/index.ts -v`.text();
+    expect(result.trim()).toMatch(/^\d+\.\d+\.\d+$/);
   });
 
   test("tags command runs without error", async () => {

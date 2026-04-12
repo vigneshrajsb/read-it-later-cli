@@ -7,22 +7,25 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      
+
       - name: Install dependencies
         run: bun install
-      
+
+      - name: Lint & format
+        run: bun run lint
+
       - name: Type check
         run: bun run tsc --noEmit
-      
+
       - name: Run tests
-        run: RIL_TEST=1 bun test
+        run: bun test
         env:
           RIL_TEST: "1"
