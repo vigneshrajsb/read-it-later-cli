@@ -6,7 +6,7 @@ URL saving and organization CLI with SQLite backend (formerly shelf-cli).
 
 **Backup before destructive operations:**
 ```bash
-cp ~/.shelf/shelf.db ~/.shelf/shelf.db.bak
+cp ~/.read-it-later/read-it-later.db ~/.read-it-later/read-it-later.db.bak
 ```
 
 ## Release Process
@@ -57,6 +57,6 @@ ril --version                   # show version
 ## Key Points
 
 - Use `--json` for programmatic access
-- Data lives in `~/.shelf/shelf.db` (local) or Turso cloud with local replica
+- Data lives in `~/.read-it-later/read-it-later.db` (local) or Turso cloud with local replica
 - Supports local SQLite and Turso cloud backends (run `ril setup` to configure)
 - You orchestrate; the CLI manages data

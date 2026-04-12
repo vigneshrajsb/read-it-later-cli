@@ -135,14 +135,14 @@ When showing lists, **always include clickable URLs**:
 The CLI supports two storage backends:
 
 ### Local (default)
-- **Location**: `~/.shelf/shelf.db`
+- **Location**: `~/.read-it-later/read-it-later.db`
 - **Format**: SQLite (portable, queryable)
 - **Backup**: Copy the file to back up all data
 - **Privacy**: Local only, never transmitted
 
 ### Turso Cloud
 - **Remote**: Cloud-hosted SQLite via Turso
-- **Local replica**: `~/.shelf/replica.db` (syncs every 60s)
+- **Local replica**: `~/.read-it-later/replica.db` (syncs every 60s)
 - **Offline**: Works offline via embedded replica, syncs when online
 - **Setup**: Run `ril setup` to configure
 
@@ -156,7 +156,7 @@ ril setup      # interactive backend setup wizard
 
 When a user first uses later, explain:
 
-> "I use a local database (`~/.shelf/shelf.db`) to save URLs you want to read, watch, or bookmark.
+> "I use a local database (`~/.read-it-later/read-it-later.db`) to save URLs you want to read, watch, or bookmark.
 > 
 > Just send me links and I'll save them. I auto-detect if it's a video or article.
 > 

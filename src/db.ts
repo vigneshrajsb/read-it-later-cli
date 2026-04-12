@@ -21,8 +21,11 @@ if (isBunTest && !isTest) {
 }
 
 const useTestDb = isTest || isBunTest;
-const DATA_DIR = useTestDb ? "/tmp/ril-test" : join(homedir(), ".shelf");
-const DB_PATH = useTestDb ? ":memory:" : join(DATA_DIR, "shelf.db");
+const DATA_DIR = useTestDb
+  ? "/tmp/ril-test"
+  : join(homedir(), ".read-it-later");
+const LEGACY_DATA_DIR = join(homedir(), ".shelf");
+const DB_PATH = useTestDb ? ":memory:" : join(DATA_DIR, "read-it-later.db");
 const REPLICA_PATH = join(DATA_DIR, "replica.db");
 const CONFIG_PATH = join(DATA_DIR, "config.json");
 
@@ -68,8 +71,24 @@ export function updateConfig(updates: Partial<Config>): Config {
   return config;
 }
 
-if (DB_PATH !== ":memory:" && !existsSync(DATA_DIR)) {
-  mkdirSync(DATA_DIR, { recursive: true });
+if (DB_PATH !== ":memory:") {
+  if (!existsSync(DATA_DIR)) {
+    mkdirSync(DATA_DIR, { recursive: true });
+  }
+
+  // Auto-migrate from legacy ~/.shelf/ to ~/.read-it-later/
+  const legacyDbPath = join(LEGACY_DATA_DIR, "shelf.db");
+  if (existsSync(legacyDbPath) && !existsSync(DB_PATH)) {
+    const { copyFileSync } = require("node:fs") as typeof import("node:fs");
+    copyFileSync(legacyDbPath, DB_PATH);
+
+    const legacyConfigPath = join(LEGACY_DATA_DIR, "config.json");
+    if (existsSync(legacyConfigPath) && !existsSync(CONFIG_PATH)) {
+      copyFileSync(legacyConfigPath, CONFIG_PATH);
+    }
+
+    console.log(`Migrated data from ${LEGACY_DATA_DIR} to ${DATA_DIR}`);
+  }
 }
 
 // --- DbClient abstraction ---
