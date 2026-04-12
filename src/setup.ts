@@ -20,7 +20,7 @@ import {
   updateConfig,
 } from "./db";
 
-const TURSO_DB_NAME = "shelf";
+const TURSO_DB_NAME = "read-it-later";
 
 function exec(
   cmd: string,
