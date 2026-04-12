@@ -13,7 +13,13 @@
   "scripts": {
     "start": "bun run src/index.ts",
     "build": "bun build src/index.ts --compile --outfile dist/later",
-    "test": "bun test"
+    "test": "bun test",
+    "lint": "biome check src tests",
+    "lint:fix": "biome check --write src tests",
+    "format": "biome format --write src tests",
+    "release:patch": "npm version patch && git push && git push --tags",
+    "release:minor": "npm version minor && git push && git push --tags",
+    "release:major": "npm version major && git push && git push --tags"
   },
   "keywords": [
     "cli",
@@ -42,7 +48,12 @@
     "bun": ">=1.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.11",
     "@types/bun": "^1.3.8",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.2.0",
+    "@libsql/client": "^0.17.2"
   }
 }

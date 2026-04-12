@@ -11,23 +11,21 @@ cp ~/.shelf/shelf.db ~/.shelf/shelf.db.bak
 
 ## Release Process
 
-When releasing a new version:
+Use conventional commit prefixes (`feat:`, `fix:`, `chore:`, `docs:`) — these are parsed to auto-generate release notes.
 
 ```bash
-# 1. Bump version (creates commit + tag)
-npm version patch|minor|major -m "Release %s - description"
+# One-command release (bumps, commits, pushes tag)
+bun run release:patch   # bug fixes
+bun run release:minor   # new features
+bun run release:major   # breaking changes
 
-# 2. Push (GitHub Actions publishes to npm)
-git push && git push --tags
+# GitHub Actions will: publish to npm + create GitHub Release with changelog
 
-# 3. UPDATE GLOBAL INSTALL (don't forget!)
+# UPDATE GLOBAL INSTALL (don't forget!)
 npm install -g read-it-later-cli@latest
-
-# 4. Verify
-npm list -g read-it-later-cli
 ```
 
-> ⚠️ Step 3 is critical! Dashboard uses the global `ril` command.
+> ⚠️ Global install update is critical! Dashboard uses the global `ril` command.
 
 ## For Agents
 
@@ -44,6 +42,10 @@ ril bookmarks                   # saved references
 ril done <id>                   # mark complete
 ril search <query>              # find items
 ril history --days 7            # recent completions
+ril setup                       # configure storage backend
+ril config                      # show config
+ril db                          # show database info
+ril --version                   # show version
 ```
 
 ## Types
@@ -55,5 +57,6 @@ ril history --days 7            # recent completions
 ## Key Points
 
 - Use `--json` for programmatic access
-- Data lives in `~/.shelf/shelf.db`
+- Data lives in `~/.shelf/shelf.db` (local) or Turso cloud with local replica
+- Supports local SQLite and Turso cloud backends (run `ril setup` to configure)
 - You orchestrate; the CLI manages data

@@ -130,12 +130,27 @@ When showing lists, **always include clickable URLs**:
 - "what did I read?" → `ril history --days 7`
 - **Bookmarks are NOT included in reading list** — user must ask explicitly
 
-## Database Info
+## Storage Backend
 
+The CLI supports two storage backends:
+
+### Local (default)
 - **Location**: `~/.shelf/shelf.db`
 - **Format**: SQLite (portable, queryable)
 - **Backup**: Copy the file to back up all data
 - **Privacy**: Local only, never transmitted
+
+### Turso Cloud
+- **Remote**: Cloud-hosted SQLite via Turso
+- **Local replica**: `~/.shelf/replica.db` (syncs every 60s)
+- **Offline**: Works offline via embedded replica, syncs when online
+- **Setup**: Run `ril setup` to configure
+
+```bash
+ril db         # show backend info and paths
+ril config     # show full config including backend
+ril setup      # interactive backend setup wizard
+```
 
 ## First-Time Setup (Onboarding Users)
 
